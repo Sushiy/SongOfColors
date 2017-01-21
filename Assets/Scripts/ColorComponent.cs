@@ -6,8 +6,16 @@ using UniRx;
 public class ColorComponent : MonoBehaviour {
 
 	ColorModelScript colorModel;
+    SpriteRenderer spriterenderer;
+    Collider2D collider;
 
 	public ColorModelScript.Color ownColor;
+
+    private void Awake()
+    {
+        spriterenderer = GetComponent<SpriteRenderer>();
+        collider = GetComponent<Collider2D>();
+    }
 
 	// Use this for initialization
 	void Start () {
@@ -31,13 +39,16 @@ public class ColorComponent : MonoBehaviour {
 		
 	}
 
-	protected void ColorActivated(){
-		SpriteRenderer renderer = GetComponentInParent<SpriteRenderer>();
-		renderer.color = Color.HSVToRGB ((int)ownColor / 360f, 1f, 1f);
-	}
+	protected void ColorActivated()
+    {
+        spriterenderer.color = Color.HSVToRGB ((int)ownColor / 360f, 1f, 1f);
+        collider.enabled = true;
 
-	protected void ColorDeactivated(){
-		SpriteRenderer renderer = GetComponentInParent<SpriteRenderer>();
-		renderer.color = new Color(0,0,0,0);
-	}
+    }
+
+	protected void ColorDeactivated()
+    {
+        spriterenderer.color = new Color(0,0,0,0);
+        collider.enabled = false;
+    }
 }
