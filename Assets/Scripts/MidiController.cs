@@ -65,7 +65,8 @@ public class MidiController : MonoBehaviour
     {
         pressedButtonCount = (pressedButtonCount - 1) < 0? 0:pressedButtonCount -1;
         audioSources[GetPianoToIndex(note - buttonOffset)].Stop();
-        ColorModelScript.instance.ActiveColor = (ColorModelScript.Color.NONE);
+        if(pressedButtonCount <= 0)
+            ColorModelScript.instance.ActiveColor = (ColorModelScript.Color.NONE);
 
         //Debug.Log("NoteOff: " + channel + "," + note);
     }
