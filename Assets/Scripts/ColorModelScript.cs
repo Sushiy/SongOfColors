@@ -62,42 +62,16 @@ public class ColorModelScript : MonoBehaviour {
     {
         switch(index)
         {
-            case -1:
-        {
-            return Color.NONE;
-        }
-            case 0:
-        {
-            return Color.PURPLE;
-        }
-            case 1:
-                {
-            return Color.BLUE;
-        }
-            case 2:
-                {
-            return Color.CYAN;
-        }
-            case 3:
-                {
-            return Color.GREEN;
-        }
-            case 4:
-                {
-            return Color.YELLOW;
-        }
-            case 5:
-                {
-            return Color.ORANGE;
-        }
-            case 6:
-                {
-            return Color.RED;
-        }
+            case -1:{return Color.NONE;}
+            case 0: {return Color.PURPLE;}
+            case 1: {return Color.BLUE; }
+            case 2: {return Color.CYAN;}
+            case 3: { return Color.GREEN; }
+            case 4: {return Color.YELLOW;}
+            case 5: { return Color.ORANGE;}
+            case 6: {return Color.RED;}
             default:return Color.NONE;
-
-    }
-        
+    	}
     }
 
     public Color ActiveColor
