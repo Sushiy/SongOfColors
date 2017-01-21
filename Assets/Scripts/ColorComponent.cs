@@ -6,21 +6,21 @@ using UniRx;
 public class ColorComponent : MonoBehaviour {
 
 	ColorModelScript colorModel;
-    SpriteRenderer spriterenderer;
+    MeshRenderer meshrenderer;
     Collider2D collider;
 
 	public ColorModelScript.Color ownColor;
 
     private void Awake()
     {
-        spriterenderer = GetComponent<SpriteRenderer>();
-        collider = GetComponent<Collider2D>();
+        meshrenderer = GetComponent<MeshRenderer>();
+        collider = GetComponentInChildren<Collider2D>();
     }
 
 	// Use this for initialization
 	void Start () {
 		ColorDeactivated();
-
+        meshrenderer.material.color = Color.HSVToRGB((float)ownColor/360.0f, 1f, 1f);
 		colorModel = ColorModelScript.instance;
 
 		colorModel.activeColor
@@ -41,14 +41,14 @@ public class ColorComponent : MonoBehaviour {
 
 	protected void ColorActivated()
     {
-        spriterenderer.color = Color.HSVToRGB ((int)ownColor / 360f, 1f, 1f);
-        collider.enabled = true;
+        gameObject.layer = 0;
+        meshrenderer.enabled = true;
 
     }
 
-	protected void ColorDeactivated()
+    protected void ColorDeactivated()
     {
-        spriterenderer.color = new Color(0,0,0,0);
-        collider.enabled = false;
+        meshrenderer.enabled = false;
+        gameObject.layer = 8;
     }
 }
