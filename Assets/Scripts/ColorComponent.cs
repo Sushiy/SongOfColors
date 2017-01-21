@@ -31,7 +31,7 @@ public class ColorComponent : MonoBehaviour {
 	void Start () {
 		ColorDeactivated();
         
-        lightThis.color = meshrenderer.material.color;
+        lightThis.color = Color.HSVToRGB((float)ownColor / 360.0f, 1f, 1f); ;
 
         colorModel = ColorModelScript.instance;
 
@@ -48,28 +48,29 @@ public class ColorComponent : MonoBehaviour {
 
 	void Update()
 	{
-		if (lerpTime > 0f)
+		if (lerpTime == 0f)
 			return;
 		if (!fadingOut) 
 		{
 			lerpTime -= Time.deltaTime;
 			Mathf.Clamp (lerpTime, 0f, lerpDuration);
-		} 
+		}
 		else 
 		{
-			lerpTime -= Time.deltaTime;
-			if (lerpTime < 0f) 
+			lerpTime -= 5 * Time.deltaTime;
+			if (lerpTime < 0.1f) 
 			{
-				lerpTime = 0;
-				fadingOut = false;
 				meshrenderer.enabled = false;
 				lightThis.enabled = false;
 				colliderThis.gameObject.layer = 8;
-			}
+                lerpTime = 0;
+                fadingOut = false;
+            }
 		}
 
 		currentColor = Color.Lerp (currentColor, destColor, 1f - lerpTime / lerpDuration);
-		meshrenderer.material.color = currentColor;
+        lightThis.color = Color.Lerp(currentColor, destColor, 1f - lerpTime / lerpDuration);
+        meshrenderer.material.color = currentColor;
 	}
 
 	protected void ColorActivated()

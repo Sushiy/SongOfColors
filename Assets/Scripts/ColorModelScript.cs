@@ -70,6 +70,7 @@ public class ColorModelScript : MonoBehaviour {
             case 4: {return Color.YELLOW;}
             case 5: { return Color.ORANGE;}
             case 6: {return Color.RED;}
+            case 7: { return Color.PURPLE; }
             default:return Color.NONE;
     	}
     }
