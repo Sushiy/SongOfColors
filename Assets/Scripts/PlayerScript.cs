@@ -15,6 +15,18 @@ public class PlayerScript : MonoBehaviour {
 
 	ColorModelScript colorModel;
 
+	SpriteRenderer renderer;
+
+	//current Hue Value (HSV color)
+	float currentHue;
+
+	//Hue Value to interpolate to
+	float destHue;
+
+	float lerpTime;
+
+	public float lerpDuration = 0.5f;
+
 	public void OnGround(){
 		isOnGround = true;
 	}
@@ -27,6 +39,7 @@ public class PlayerScript : MonoBehaviour {
 	void Start () {
 		colorModel = ColorModelScript.instance;
 		body = transform.GetComponent<Rigidbody2D>();
+		renderer = GetComponentInParent<SpriteRenderer>();
 
 		colorModel.activeColor
 			.Subscribe(x => ChangeColor(x))
@@ -34,7 +47,11 @@ public class PlayerScript : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {}
+	void Update () {
+		lerpTime -= Time.deltaTime;
+		currentHue = Mathf.Lerp(lerpTime / lerpDuration, currentHue, destHue);
+		renderer.color = Color.HSVToRGB (currentHue / 360f, 1f, 1f);
+	}
 
 	void FixedUpdate() {
 		if (isOnGround && Input.GetKey(KeyCode.Space)) {
@@ -64,8 +81,8 @@ public class PlayerScript : MonoBehaviour {
 	}
 
 	void ChangeColor(ColorModelScript.Color newColor) {
-		SpriteRenderer renderer = GetComponentInParent<SpriteRenderer>();
-		renderer.color = Color.HSVToRGB ((float)newColor / 360f, 1f, 1f);
+		destHue = (float)newColor / 360f;
+		lerpTime = lerpDuration;
 	}
 		
 	void GameOver() {
