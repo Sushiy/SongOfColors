@@ -19,6 +19,8 @@ public class ColorModelScript : MonoBehaviour {
 
 	float frequence;
 
+	Dictionary<Color,float> frequences;
+
 	public void addFrequence(float f) {
 		print (frequence + f);
 		setFrequence (frequence + f);
@@ -27,30 +29,36 @@ public class ColorModelScript : MonoBehaviour {
 	public void setFrequence (float newFrequence) {
 		frequence = newFrequence;
 
-		Color newColor;
-
-		if (newFrequence < 0f) {
-			newColor = Color.NONE;
-		} else if (newFrequence < 10f) {
-			newColor = Color.PURPLE;
-		} else if (newFrequence < 20f) {
-			newColor = Color.BLUE;
-		} else if (newFrequence < 30f) {
-			newColor = Color.CYAN;
-		} else if (newFrequence < 40f) {
-			newColor = Color.GREEN;
-		} else if (newFrequence < 50f) {
-			newColor = Color.YELLOW;
-		} else if (newFrequence < 60f) {
-			newColor = Color.ORANGE;
-		} else {
-			newColor = Color.RED;
-		}
+		Color newColor = getColorOfFrequence(frequence);
 
 		if (newColor != activeColor.Value) {
 			oldColor.Value = activeColor.Value;
 			activeColor.Value = newColor;
 		}
+	}
+
+	Color getColorOfFrequence(float f) {
+		if (f < 0f) {
+			return Color.NONE;
+		} else if (f < (frequences[Color.PURPLE] + frequences[Color.BLUE]) / 2f) {
+			return Color.PURPLE;
+		} else if (f < (frequences[Color.BLUE] + frequences[Color.CYAN]) / 2f) {
+			return Color.BLUE;
+		} else if (f < (frequences[Color.CYAN] + frequences[Color.GREEN]) / 2f) {
+			return Color.CYAN;
+		} else if (f < (frequences[Color.GREEN] + frequences[Color.YELLOW]) / 2f) {
+			return Color.GREEN;
+		} else if (f < (frequences[Color.YELLOW] + frequences[Color.ORANGE]) / 2f) {
+			return Color.YELLOW;
+		} else if (f < (frequences[Color.ORANGE] + frequences[Color.RED]) / 2f) {
+			return Color.ORANGE;
+		} else {
+			return Color.RED;
+		}
+	}
+
+	float getHueOfFrequence(float f) {
+		return 0f;	
 	}
 
 	void Awake() {
@@ -63,6 +71,16 @@ public class ColorModelScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		frequence = 0;
+
+
+		frequences[Color.NONE] 		= -1f;
+		frequences[Color.PURPLE] 	= 5f;
+		frequences[Color.BLUE] 		= 15f;
+		frequences[Color.CYAN] 		= 25f;
+		frequences[Color.GREEN] 	= 35f;
+		frequences[Color.YELLOW] 	= 45f;
+		frequences[Color.ORANGE] 	= 55f;
+		frequences[Color.RED] 		= 65f;
 	}
 
 	void OnColorChanged(){

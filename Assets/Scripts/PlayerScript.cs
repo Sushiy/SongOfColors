@@ -47,10 +47,10 @@ public class PlayerScript : MonoBehaviour {
 			body.transform.position += Vector3.right * (horizontalSpeed * Time.deltaTime);
 		}
 		if (Input.GetKeyDown(KeyCode.W)) {
-			colorModel.addFrequence(10f);
+			colorModel.addFrequence(1f);
 		}
 		if (Input.GetKeyDown(KeyCode.S)) {
-			colorModel.addFrequence(-10f);
+			colorModel.addFrequence(-1f);
 		}
 	}
 
