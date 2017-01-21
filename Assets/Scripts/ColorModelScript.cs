@@ -17,19 +17,20 @@ public class ColorModelScript : MonoBehaviour {
 
 	public ReactiveProperty<Color> oldColor;
 
-	float frequence;
+	public ReactiveProperty<float> frequence;
 
 	Dictionary<Color,float> frequences;
 
 	public void addFrequence(float f) {
-		print (frequence + f);
-		setFrequence (frequence + f);
+		print (frequence.Value + f);
+		setFrequence (frequence.Value + f);
 	}
 
-	public void setFrequence (float newFrequence) {
-		frequence = newFrequence;
+	public void setFrequence (float newFrequence)
+    {
+		frequence.Value = newFrequence;
 
-		Color newColor = getColorOfFrequence(frequence);
+		Color newColor = getColorOfFrequence(frequence.Value);
 
 		if (newColor != activeColor.Value) {
 			oldColor.Value = activeColor.Value;
@@ -57,7 +58,62 @@ public class ColorModelScript : MonoBehaviour {
 		}
 	}
 
-	float getHueOfFrequence(float f) {
+    public Color getColorFromIndex(int index)
+    {
+        switch(index)
+        {
+            case -1:
+        {
+            return Color.NONE;
+        }
+            case 0:
+        {
+            return Color.PURPLE;
+        }
+            case 1:
+                {
+            return Color.BLUE;
+        }
+            case 2:
+                {
+            return Color.CYAN;
+        }
+            case 3:
+                {
+            return Color.GREEN;
+        }
+            case 4:
+                {
+            return Color.YELLOW;
+        }
+            case 5:
+                {
+            return Color.ORANGE;
+        }
+            case 6:
+                {
+            return Color.RED;
+        }
+            default:return Color.NONE;
+
+    }
+        
+    }
+
+    public Color ActiveColor
+    {
+        get
+        {
+            return activeColor.Value;
+        }
+        set
+        {
+            oldColor.Value = activeColor.Value;
+            activeColor.Value = value;
+        }
+    }
+
+    public float getHueOfFrequence(float f) {
 		return 0f;	
 	}
 
@@ -65,11 +121,13 @@ public class ColorModelScript : MonoBehaviour {
 		instance = this;
 		activeColor = new ReactiveProperty<Color>(Color.NONE);
 		oldColor = new ReactiveProperty<Color>(Color.NONE);
+        frequence = new ReactiveProperty<float>();
 	}
 
 	// Use this for initialization
-	void Start () {
-		frequence = 0;
+	void Start ()
+    {
+		frequence.Value = 0;
         frequences = new Dictionary<Color, float>();
 
 		frequences[Color.NONE] 		= -1f;
@@ -81,6 +139,12 @@ public class ColorModelScript : MonoBehaviour {
 		frequences[Color.ORANGE] 	= 55f;
 		frequences[Color.RED] 		= 65f;
 	}
+
+    public void setActiveColor(Color c)
+    {
+        Debug.Log(c.ToString());
+        activeColor.Value = c;
+    }
 
 	void OnColorChanged(){
 		

@@ -56,6 +56,7 @@ public class MidiController : MonoBehaviour
     {
         audioSources[GetPianoToIndex(note - buttonOffset)].pitch = Mathf.Pow(1.0594631f, note - (buttonOffset + NUMOFKEYS/2));
         audioSources[GetPianoToIndex(note - buttonOffset)].Play();
+        ColorModelScript.instance.ActiveColor = (ColorModelScript.instance.getColorFromIndex(GetPianoToIndex(note - buttonOffset)));
         pressedButtonCount++;
         //Debug.Log("NoteOn: " + channel + "," + note + "," + velocity);
     }
@@ -64,6 +65,7 @@ public class MidiController : MonoBehaviour
     {
         pressedButtonCount = (pressedButtonCount - 1) < 0? 0:pressedButtonCount -1;
         audioSources[GetPianoToIndex(note - buttonOffset)].Stop();
+        ColorModelScript.instance.ActiveColor = (ColorModelScript.Color.NONE);
 
         //Debug.Log("NoteOff: " + channel + "," + note);
     }
