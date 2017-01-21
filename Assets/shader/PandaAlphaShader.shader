@@ -38,7 +38,7 @@
 			}
 			else
 			{
-				o.Albedo = c.rgb * _Color * (1 - alpha.r) * 1.5f;
+				o.Albedo = c.rgb * _Color * (1 - alpha.r);
 				//o.Emission = c.rgb * _Color * (1 - alpha.r) * 1.5f;
 			}
 			// Metallic and smoothness come from slider variables
