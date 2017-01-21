@@ -55,6 +55,7 @@ public class MidiController : MonoBehaviour
     void NoteOn(MidiChannel channel, int note, float velocity)
     {
         audioSources[GetPianoToIndex(note - buttonOffset)].pitch = Mathf.Pow(1.0594631f, note - (buttonOffset + NUMOFKEYS/2));
+        audioSources[GetPianoToIndex(note - buttonOffset)].volume = 0.7f;
         audioSources[GetPianoToIndex(note - buttonOffset)].Play();
         ColorModelScript.instance.ActiveColor = (ColorModelScript.instance.getColorFromIndex(GetPianoToIndex(note - buttonOffset)));
         pressedButtonCount++;
@@ -64,7 +65,7 @@ public class MidiController : MonoBehaviour
     void NoteOff(MidiChannel channel, int note)
     {
         pressedButtonCount = (pressedButtonCount - 1) < 0? 0:pressedButtonCount -1;
-        audioSources[GetPianoToIndex(note - buttonOffset)].Stop();
+        StartCoroutine(FadeOut(audioSources[GetPianoToIndex(note - buttonOffset)]));
         if(pressedButtonCount <= 0)
             ColorModelScript.instance.ActiveColor = (ColorModelScript.Color.NONE);
 
@@ -102,5 +103,18 @@ public class MidiController : MonoBehaviour
         if (IndexToPiano.ContainsKey(i))
             return IndexToPiano[i];
         return 0;
+    }
+    
+    IEnumerator FadeOut(AudioSource source)
+    {
+        float volume = source.volume;
+        while(volume > 0)
+        {
+            volume -= 2.0f * Time.deltaTime;
+            source.volume = volume;
+            yield return null;
+        }
+
+        source.Stop();
     }
 }
