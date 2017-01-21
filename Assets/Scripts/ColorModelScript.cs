@@ -63,7 +63,6 @@ public class ColorModelScript : MonoBehaviour {
 
 	void Awake() {
 		instance = this;
-
 		activeColor = new ReactiveProperty<Color>(Color.NONE);
 		oldColor = new ReactiveProperty<Color>(Color.NONE);
 	}
@@ -71,7 +70,7 @@ public class ColorModelScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		frequence = 0;
-
+        frequences = new Dictionary<Color, float>();
 
 		frequences[Color.NONE] 		= -1f;
 		frequences[Color.PURPLE] 	= 5f;
