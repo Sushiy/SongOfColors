@@ -35,7 +35,7 @@
 			if(alpha.r > 0.5f)
 				o.Albedo = c.rgb * (alpha.r);
 			else
-				o.Albedo = c.rgb * _Color * (1-alpha.r);
+				o.Albedo = c.rgb * _Color * (1-alpha.r) * 1.5f;
 			// Metallic and smoothness come from slider variables
 			o.Metallic = _Metallic;
 			o.Smoothness = _Glossiness;

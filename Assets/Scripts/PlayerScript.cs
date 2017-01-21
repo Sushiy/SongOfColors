@@ -15,13 +15,13 @@ public class PlayerScript : MonoBehaviour {
 
 	ColorModelScript colorModel;
 
-	SpriteRenderer renderer;
+	public MeshRenderer renderer;
 
 	//current Hue Value (HSV color)
 	float currentHue;
 
 	//Hue Value to interpolate to
-	float destHue;
+	Color destColor;
 
 	float lerpTime;
 
@@ -39,7 +39,6 @@ public class PlayerScript : MonoBehaviour {
 	void Start () {
 		colorModel = ColorModelScript.instance;
 		body = transform.GetComponent<Rigidbody2D>();
-		renderer = GetComponentInParent<SpriteRenderer>();
 		currentHue = 0f;
 
 		colorModel.activeColor
@@ -53,8 +52,8 @@ public class PlayerScript : MonoBehaviour {
 			lerpTime -= Time.deltaTime;
 			Mathf.Clamp (lerpTime, 0, lerpDuration);
 		}
-		currentHue = Mathf.Lerp(currentHue, destHue, 1f - lerpTime / lerpDuration);
-		renderer.color = Color.HSVToRGB (currentHue, 1f, 1f);
+
+        renderer.material.color = Color.Lerp(renderer.material.color, destColor, 1f - lerpTime / lerpDuration);
 	}
 
 	void FixedUpdate() {
@@ -84,8 +83,14 @@ public class PlayerScript : MonoBehaviour {
 		}
 	}
 
-	void ChangeColor(ColorModelScript.Color newColor) {
-		destHue = (float)newColor / 360f;
+	void ChangeColor(ColorModelScript.Color newColor)
+    {
+        if(newColor == ColorModelScript.Color.NONE)
+        {
+            destColor = Color.white;
+        }
+        else
+		    destColor = Color.HSVToRGB((float)newColor / 360f, 1f, 1f);
 		lerpTime = lerpDuration;
 	}
 		
