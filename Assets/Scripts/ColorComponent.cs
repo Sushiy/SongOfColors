@@ -6,22 +6,34 @@ using UniRx;
 public class ColorComponent : MonoBehaviour {
 
 	ColorModelScript colorModel;
-    SpriteRenderer spriterenderer;
-    Collider2D collider;
+    MeshRenderer meshrenderer;
+    Collider2D colliderThis;
+    Light lightThis;
 
 	public ColorModelScript.Color ownColor;
 
+	Color currentColor;
+	Color destColor;
+
+	float lerpTime;
+	float lerpDuration = 1f;
+
+	bool fadingOut = false;
+
     private void Awake()
     {
-        spriterenderer = GetComponent<SpriteRenderer>();
-        collider = GetComponent<Collider2D>();
+        meshrenderer = GetComponent<MeshRenderer>();
+        colliderThis = GetComponentInChildren<Collider2D>();
+        lightThis = GetComponentInChildren<Light>();
     }
 
 	// Use this for initialization
 	void Start () {
 		ColorDeactivated();
+        
+        lightThis.color = Color.HSVToRGB((float)ownColor / 360.0f, 1f, 1f); ;
 
-		colorModel = ColorModelScript.instance;
+        colorModel = ColorModelScript.instance;
 
 		colorModel.activeColor
 			.Where(x => ownColor == x)
@@ -33,22 +45,48 @@ public class ColorComponent : MonoBehaviour {
 			.Subscribe (x => ColorDeactivated())
 			.AddTo(gameObject);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	void Update()
+	{
+		if (lerpTime == 0f)
+			return;
+		if (!fadingOut) 
+		{
+			lerpTime -= Time.deltaTime;
+			Mathf.Clamp (lerpTime, 0f, lerpDuration);
+		}
+		else 
+		{
+			lerpTime -= 5 * Time.deltaTime;
+			if (lerpTime < 0.1f) 
+			{
+				meshrenderer.enabled = false;
+				lightThis.enabled = false;
+				colliderThis.gameObject.layer = 8;
+                lerpTime = 0;
+                fadingOut = false;
+            }
+		}
+
+		currentColor = Color.Lerp (currentColor, destColor, 1f - lerpTime / lerpDuration);
+        lightThis.color = Color.Lerp(currentColor, destColor, 1f - lerpTime / lerpDuration);
+        meshrenderer.material.color = currentColor;
 	}
 
 	protected void ColorActivated()
     {
-        spriterenderer.color = Color.HSVToRGB ((int)ownColor / 360f, 1f, 1f);
-        collider.enabled = true;
-
+		currentColor = new Color(0, 0, 0);
+		destColor = Color.HSVToRGB((float)ownColor/360.0f, 1f, 1f);
+		lerpTime = lerpDuration;
+		colliderThis.gameObject.layer = 0;
+        meshrenderer.enabled = true;
+        lightThis.enabled = true;
     }
 
-	protected void ColorDeactivated()
+    protected void ColorDeactivated()
     {
-        spriterenderer.color = new Color(0,0,0,0);
-        collider.enabled = false;
+		fadingOut = true;
+		destColor= new Color(0, 0, 0);
+		lerpTime = lerpDuration;
     }
 }

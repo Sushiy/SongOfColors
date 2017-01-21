@@ -15,17 +15,19 @@ public class PlayerScript : MonoBehaviour {
 
 	ColorModelScript colorModel;
 
-	SpriteRenderer renderer;
+	public MeshRenderer meshrenderer;
 
 	//current Hue Value (HSV color)
 	float currentHue;
 
 	//Hue Value to interpolate to
-	float destHue;
+	Color destColor;
+
+    public ReactiveProperty<Color> currentColor;
 
 	float lerpTime;
 
-	public float lerpDuration = 0.5f;
+	public float lerpDuration = 2.5f;
 
 	public void OnGround(){
 		isOnGround = true;
@@ -35,11 +37,17 @@ public class PlayerScript : MonoBehaviour {
 		isOnGround = false;
 	}
 
+    private void Awake()
+    {
+        currentColor = new ReactiveProperty<Color>();
+        body = transform.GetComponent<Rigidbody2D>();
+    }
+
 	// Use this for initialization
-	void Start () {
-		colorModel = ColorModelScript.instance;
-		body = transform.GetComponent<Rigidbody2D>();
-		renderer = GetComponentInParent<SpriteRenderer>();
+	void Start ()
+    {
+        colorModel = ColorModelScript.instance;
+		currentHue = 0f;
 
 		colorModel.activeColor
 			.Subscribe(x => ChangeColor(x))
@@ -48,9 +56,12 @@ public class PlayerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		lerpTime -= Time.deltaTime;
-		currentHue = Mathf.Lerp(lerpTime / lerpDuration, currentHue, destHue);
-		renderer.color = Color.HSVToRGB (currentHue / 360f, 1f, 1f);
+		if (lerpTime > 0f) {
+			lerpTime -= Time.deltaTime;
+			Mathf.Clamp (lerpTime, 0, lerpDuration);
+		}
+        currentColor.Value = Color.Lerp(currentColor.Value, destColor, 1f - lerpTime / lerpDuration);
+        meshrenderer.material.color = currentColor.Value; 
 	}
 
 	void FixedUpdate() {
@@ -80,8 +91,14 @@ public class PlayerScript : MonoBehaviour {
 		}
 	}
 
-	void ChangeColor(ColorModelScript.Color newColor) {
-		destHue = (float)newColor / 360f;
+	void ChangeColor(ColorModelScript.Color newColor)
+    {
+        if(newColor == ColorModelScript.Color.NONE)
+        {
+            destColor = Color.white;
+        }
+        else
+		    destColor = Color.HSVToRGB((float)newColor / 360f, 1f, 1f);
 		lerpTime = lerpDuration;
 	}
 		

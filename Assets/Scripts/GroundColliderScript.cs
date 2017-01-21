@@ -15,7 +15,9 @@ public class GroundColliderScript : MonoBehaviour {
 	void Update () {}
 
 	void OnCollisionEnter2D(Collision2D other) {
-		if (other.collider.tag == "ground") {
+		if (other.collider.tag == "ground")
+        {
+            Debug.Log("ground");
 			father.OnGround();
 		}
 	}
