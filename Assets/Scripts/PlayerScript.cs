@@ -25,7 +25,7 @@ public class PlayerScript : MonoBehaviour {
 
 	float lerpTime;
 
-	public float lerpDuration = 0.5f;
+	public float lerpDuration = 2.5f;
 
 	public void OnGround(){
 		isOnGround = true;
@@ -40,6 +40,7 @@ public class PlayerScript : MonoBehaviour {
 		colorModel = ColorModelScript.instance;
 		body = transform.GetComponent<Rigidbody2D>();
 		renderer = GetComponentInParent<SpriteRenderer>();
+		currentHue = 0f;
 
 		colorModel.activeColor
 			.Subscribe(x => ChangeColor(x))
@@ -48,9 +49,12 @@ public class PlayerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		lerpTime -= Time.deltaTime;
-		currentHue = Mathf.Lerp(lerpTime / lerpDuration, currentHue, destHue);
-		renderer.color = Color.HSVToRGB (currentHue / 360f, 1f, 1f);
+		if (lerpTime > 0f) {
+			lerpTime -= Time.deltaTime;
+			Mathf.Clamp (lerpTime, 0, lerpDuration);
+		}
+		currentHue = Mathf.Lerp(currentHue, destHue, 1f - lerpTime / lerpDuration);
+		renderer.color = Color.HSVToRGB (currentHue, 1f, 1f);
 	}
 
 	void FixedUpdate() {
