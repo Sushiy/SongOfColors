@@ -54,6 +54,11 @@ public class MidiController : MonoBehaviour
 
     void NoteOn(MidiChannel channel, int note, float velocity)
     {
+        if(audioSources[GetPianoToIndex(note - buttonOffset)].isPlaying)
+        {
+            StopCoroutine(FadeOut(audioSources[GetPianoToIndex(note - buttonOffset)]));
+            audioSources[GetPianoToIndex(note - buttonOffset)].Stop();
+        }
         audioSources[GetPianoToIndex(note - buttonOffset)].pitch = Mathf.Pow(1.0594631f, note - (buttonOffset + NUMOFKEYS/2));
         audioSources[GetPianoToIndex(note - buttonOffset)].volume = 0.7f;
         audioSources[GetPianoToIndex(note - buttonOffset)].Play();
@@ -110,7 +115,7 @@ public class MidiController : MonoBehaviour
         float volume = source.volume;
         while(volume > 0)
         {
-            volume -= 2.0f * Time.deltaTime;
+            volume -= 3.0f * Time.deltaTime;
             source.volume = volume;
             yield return null;
         }
