@@ -12,6 +12,14 @@ public class ColorComponent : MonoBehaviour {
 
 	public ColorModelScript.Color ownColor;
 
+	Color currentColor;
+	Color destColor;
+
+	float lerpTime;
+	float lerpDuration = 1f;
+
+	bool fadingOut = false;
+
     private void Awake()
     {
         meshrenderer = GetComponent<MeshRenderer>();
@@ -22,7 +30,7 @@ public class ColorComponent : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		ColorDeactivated();
-        meshrenderer.material.color = Color.HSVToRGB((float)ownColor/360.0f, 1f, 1f);
+        
         lightThis.color = meshrenderer.material.color;
 
         colorModel = ColorModelScript.instance;
@@ -37,17 +45,47 @@ public class ColorComponent : MonoBehaviour {
 			.Subscribe (x => ColorDeactivated())
 			.AddTo(gameObject);
 	}
+
+	void Update()
+	{
+		if (lerpTime > 0f)
+			return;
+		if (!fadingOut) 
+		{
+			lerpTime -= Time.deltaTime;
+			Mathf.Clamp (lerpTime, 0f, lerpDuration);
+		} 
+		else 
+		{
+			lerpTime -= Time.deltaTime;
+			if (lerpTime < 0f) 
+			{
+				lerpTime = 0;
+				fadingOut = false;
+				meshrenderer.enabled = false;
+				lightThis.enabled = false;
+				colliderThis.gameObject.layer = 8;
+			}
+		}
+
+		currentColor = Color.Lerp (currentColor, destColor, 1f - lerpTime / lerpDuration);
+		meshrenderer.material.color = currentColor;
+	}
+
 	protected void ColorActivated()
     {
-        colliderThis.gameObject.layer = 0;
+		currentColor = new Color(0, 0, 0);
+		destColor = Color.HSVToRGB((float)ownColor/360.0f, 1f, 1f);
+		lerpTime = lerpDuration;
+		colliderThis.gameObject.layer = 0;
         meshrenderer.enabled = true;
         lightThis.enabled = true;
     }
 
     protected void ColorDeactivated()
     {
-        meshrenderer.enabled = false;
-        lightThis.enabled = false;
-        colliderThis.gameObject.layer = 8;
+		fadingOut = true;
+		destColor= new Color(0, 0, 0);
+		lerpTime = lerpDuration;
     }
 }
