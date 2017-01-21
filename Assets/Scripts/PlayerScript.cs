@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 public class PlayerScript : MonoBehaviour {
 
@@ -12,6 +13,8 @@ public class PlayerScript : MonoBehaviour {
 
 	bool isOnGround = false;
 
+	ColorModelScript colorModel;
+
 	public void OnGround(){
 		isOnGround = true;
 	}
@@ -22,7 +25,12 @@ public class PlayerScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		colorModel = ColorModelScript.instance;
 		body = transform.GetComponent<Rigidbody2D>();
+
+		colorModel.activeColor
+			.Subscribe(x => ChangeColor(x))
+			.AddTo(gameObject);
 	}
 	
 	// Update is called once per frame
@@ -32,11 +40,17 @@ public class PlayerScript : MonoBehaviour {
 		if (isOnGround && Input.GetKey(KeyCode.Space)) {
 			body.AddForce(Vector2.up * jumpPower);
 		}
-		if (Input.GetKey (KeyCode.A)) {
+		if (Input.GetKey(KeyCode.A)) {
 			body.transform.position += Vector3.left * (horizontalSpeed * Time.deltaTime);
 		}
 		else if (Input.GetKey(KeyCode.D)) {
 			body.transform.position += Vector3.right * (horizontalSpeed * Time.deltaTime);
+		}
+		if (Input.GetKeyDown(KeyCode.W)) {
+			colorModel.addFrequence(10f);
+		}
+		if (Input.GetKeyDown(KeyCode.S)) {
+			colorModel.addFrequence(-10f);
 		}
 	}
 
@@ -47,6 +61,11 @@ public class PlayerScript : MonoBehaviour {
 			//increase Points
 			//despawn Point
 		}
+	}
+
+	void ChangeColor(ColorModelScript.Color newColor) {
+		SpriteRenderer renderer = GetComponentInParent<SpriteRenderer>();
+		renderer.color = Color.HSVToRGB ((int)newColor / 360f, 1f, 1f);
 	}
 		
 	void GameOver() {

@@ -5,41 +5,69 @@ using UniRx;
 
 public class ColorModelScript : MonoBehaviour {
 
-	public enum Color
+	public enum Color : int //int values are Hue values of the hsv colors
 	{
-		PURPLE, BLUE, GREEN, YELLOW, ORANGE, RED
+		NONE = -1, PURPLE = 303, BLUE = 236, CYAN = 187, GREEN = 102, YELLOW = 60, ORANGE = 39, RED = 0
 	}
 		
+	//for global access
 	public static ColorModelScript instance;
 
 	public ReactiveProperty<Color> activeColor;
 
+	public ReactiveProperty<Color> oldColor;
+
+	float frequence;
+
+	public void addFrequence(float f) {
+		print (frequence + f);
+		setFrequence (frequence + f);
+	}
+
 	public void setFrequence (float newFrequence) {
-		if (newFrequence < 10f)
-			activeColor = Color.PURPLE;
-		else if (newFrequence < 20f)
-			activeColor = Color.BLUE;
-		else if (newFrequence < 30f)
-			activeColor = Color.GREEN;
-		else if (newFrequence < 40f)
-			activeColor = Color.YELLOW;
-		else if (newFrequence < 50f)
-			activeColor = Color.ORANGE;
-		else
-			activeColor = Color.RED;
+		frequence = newFrequence;
+
+		Color newColor;
+
+		if (newFrequence < 0f) {
+			newColor = Color.NONE;
+		} else if (newFrequence < 10f) {
+			newColor = Color.PURPLE;
+		} else if (newFrequence < 20f) {
+			newColor = Color.BLUE;
+		} else if (newFrequence < 30f) {
+			newColor = Color.CYAN;
+		} else if (newFrequence < 40f) {
+			newColor = Color.GREEN;
+		} else if (newFrequence < 50f) {
+			newColor = Color.YELLOW;
+		} else if (newFrequence < 60f) {
+			newColor = Color.ORANGE;
+		} else {
+			newColor = Color.RED;
+		}
+
+		if (newColor != activeColor.Value) {
+			oldColor.Value = activeColor.Value;
+			activeColor.Value = newColor;
+		}
+	}
+
+	void Awake() {
+		instance = this;
+
+		activeColor = new ReactiveProperty<Color>(Color.NONE);
+		oldColor = new ReactiveProperty<Color>(Color.NONE);
 	}
 
 	// Use this for initialization
 	void Start () {
-		instance = this;
-		activeColor = new ReactiveProperty<Color> ();
-
-		activeColor
-			.Where(activeColor => ownColor == activeColor)
-			.Subscribe (activeColor => OnColorChanged); 
+		frequence = 0;
 	}
 
-	OnColorChanged(Color)
+	void OnColorChanged(){
+		
+	}
 
 
 	// Update is called once per frame
