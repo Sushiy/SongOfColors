@@ -13,7 +13,7 @@ public class ColorModelScript : MonoBehaviour {
 	//for global access
 	public static ColorModelScript instance;
 
-	public ReactiveProperty<Color> activeColor;
+    public ReactiveProperty<Color> activeColor;
 
 	public ReactiveProperty<Color> oldColor;
 
