@@ -28,8 +28,8 @@ public class PlayerScript : MonoBehaviour {
 		colorModel = ColorModelScript.instance;
 		body = transform.GetComponent<Rigidbody2D>();
 
-		colorModel.frequence
-			.Subscribe(x => ChangeColor(colorModel.getHueOfFrequence(x)))
+		colorModel.activeColor
+			.Subscribe(x => ChangeColor(x))
 			.AddTo(gameObject);
 	}
 	
@@ -63,9 +63,9 @@ public class PlayerScript : MonoBehaviour {
 		}
 	}
 
-	void ChangeColor(float newColor) {
+	void ChangeColor(ColorModelScript.Color newColor) {
 		SpriteRenderer renderer = GetComponentInParent<SpriteRenderer>();
-		renderer.color = Color.HSVToRGB (newColor / 360f, 1f, 1f);
+		renderer.color = Color.HSVToRGB ((float)newColor / 360f, 1f, 1f);
 	}
 		
 	void GameOver() {
