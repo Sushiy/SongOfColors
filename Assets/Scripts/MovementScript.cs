@@ -10,12 +10,15 @@ public class MovementScript : MonoBehaviour {
 
 	public float lerpTime;
 
+    Rigidbody2D rigid2d;
+
 	float time;
 
 	bool movingBack;
 
 	// Use this for initialization
 	void Start () {
+        rigid2d = GetComponent<Rigidbody2D>();
 		startPos = transform.position;
 		time = 0;
 		movingBack = false;
@@ -26,14 +29,14 @@ public class MovementScript : MonoBehaviour {
 		if (!movingBack) {
 			time += Time.deltaTime;
 			time = Mathf.Clamp (time, 0f, lerpTime);
-			transform.position = Vector3.Lerp (startPos, startPos + moveVec, time / lerpTime);
+			rigid2d.MovePosition(Vector3.Lerp (startPos, startPos + moveVec, time / lerpTime));
 			if (time == lerpTime)
 				movingBack = true;
 		} else {
 			time -= Time.deltaTime;
 			time = Mathf.Clamp (time, 0f, lerpTime);
-			transform.position = Vector3.Lerp (startPos, startPos + moveVec, time / lerpTime);
-			if (time == 0f)
+            rigid2d.MovePosition(Vector3.Lerp(startPos, startPos + moveVec, time / lerpTime));
+            if (time == 0f)
 				movingBack = false;
 		}
 	}

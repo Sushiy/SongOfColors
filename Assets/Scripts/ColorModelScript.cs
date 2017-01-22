@@ -19,7 +19,7 @@ public class ColorModelScript : MonoBehaviour {
 
 	public ReactiveProperty<float> frequence;
 
-	Dictionary<Color,float> frequences;
+	public Dictionary<Color,float> frequences;
 
 	public void addFrequence(float f) {
 		print (frequence.Value + f);
