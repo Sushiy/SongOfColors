@@ -60,7 +60,8 @@ public class ColorModelScript : MonoBehaviour {
 
     public Color getColorFromIndex(int index)
     {
-        switch(index % 7)
+        int i = index % 7;
+        switch(i)
         {
             case -1:{ return Color.NONE; }
             case 0: { return Color.PURPLE; }

@@ -96,8 +96,9 @@ public class MidiController : MonoBehaviour
 
     int GetPianoToIndex(int i)
     {
-        if (PianoToIndex.ContainsKey(i))
-            return PianoToIndex[i];
+        int im = i % 12;
+        if (PianoToIndex.ContainsKey(im))
+            return PianoToIndex[im];
         return 0;
     }
 
@@ -117,7 +118,5 @@ public class MidiController : MonoBehaviour
             source.volume = volume;
             yield return null;
         }
-
-        //source.Stop();
     }
 }

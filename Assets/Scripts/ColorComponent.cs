@@ -71,7 +71,8 @@ public class ColorComponent : MonoBehaviour {
                 lerpTime -= 5 * Time.deltaTime;
                 if (lerpTime < 0.1f)
                 {
-                    meshrenderer.enabled = hasDoor ? true : false;
+                    if (meshrenderer != null)
+                        meshrenderer.enabled = hasDoor ? true : false;
                     lightThis.enabled = false;
                     colliderThis.gameObject.layer = hasDoor ? 0 : 8;
                     lerpTime = 0;
@@ -81,7 +82,8 @@ public class ColorComponent : MonoBehaviour {
 
             currentColor = Color.Lerp(currentColor, destColor, 1f - lerpTime / lerpDuration);
             lightThis.color = Color.Lerp(currentColor, destColor, 1f - lerpTime / lerpDuration);
-            meshrenderer.material.color = currentColor;
+            if (meshrenderer != null)
+                meshrenderer.material.color = currentColor;
         }
         else
         {
@@ -104,7 +106,8 @@ public class ColorComponent : MonoBehaviour {
 		destColor = Color.HSVToRGB((float)ownColor/360.0f, 1f, 1f);
 		lerpTime = lerpDuration;
 		colliderThis.gameObject.layer = 0;
-        meshrenderer.enabled = true;
+        if(meshrenderer != null)
+            meshrenderer.enabled = true;
         lightThis.enabled = true;
 
 		if (hasDoor) {

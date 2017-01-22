@@ -40,4 +40,9 @@ public class MovementScript : MonoBehaviour {
 				movingBack = false;
 		}
 	}
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawLine(transform.position + new Vector3(0,0.5f, 0), transform.position + moveVec + new Vector3(0, 0.5f, 0));
+    }
 }

@@ -14,7 +14,6 @@ public class FlowerColorComponent : ColorComponent
 
     protected override void Awake()
     {
-        meshrenderer = leaf1;
         animThis = GetComponent<Animator>();
         colliderThis = GetComponentInChildren<Collider2D>();
         lightThis = GetComponentInChildren<Light>();
@@ -35,7 +34,8 @@ public class FlowerColorComponent : ColorComponent
                 lerpTime -= 5 * Time.deltaTime;
                 if (lerpTime < 0.1f)
                 {
-                    meshrenderer.enabled = hasDoor ? true : false;
+                    if (meshrenderer != null)
+                        meshrenderer.enabled = hasDoor ? true : false;
                     lightThis.enabled = false;
                     colliderThis.gameObject.layer = hasDoor ? 0 : 8;
                     lerpTime = 0;
@@ -63,12 +63,14 @@ public class FlowerColorComponent : ColorComponent
     protected override void ColorActivated()
     {
         base.ColorActivated();
-        animThis.SetBool("bOpen", true);
+        if(animThis != null)
+            animThis.SetBool("bOpen", true);
     }
 
     protected override void ColorDeactivated()
     {
         base.ColorDeactivated();
-        animThis.SetBool("bOpen", false);
+        if (animThis != null)
+            animThis.SetBool("bOpen", false);
     }
 }
