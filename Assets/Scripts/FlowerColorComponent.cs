@@ -35,6 +35,7 @@ public class FlowerColorComponent : ColorComponent
                 lerpTime -= 5 * Time.deltaTime;
                 if (lerpTime < 0.1f)
                 {
+                    meshrenderer.enabled = hasDoor ? true : false;
                     lightThis.enabled = false;
                     colliderThis.gameObject.layer = hasDoor ? 0 : 8;
                     lerpTime = 0;
@@ -48,6 +49,14 @@ public class FlowerColorComponent : ColorComponent
             leaf2.material.color = currentColor;
             leaf3.material.color = currentColor;
             leaf4.material.color = currentColor;
+        }
+        else
+        {
+
+            if (Vector3.Distance(PlayerScript.instance.transform.position, transform.position) > range)
+                ColorDeactivated();
+            else if (!lightThis.enabled && colorModel.activeColor.Value == ownColor)
+                ColorActivated();
         }
     }
 

@@ -11,6 +11,7 @@ public class ColorComponent : MonoBehaviour {
     protected Light lightThis;
 
 	public ColorModelScript.Color ownColor;
+    public float range = 5;
 
 	protected Color currentColor;
 	protected Color destColor;
@@ -37,7 +38,8 @@ public class ColorComponent : MonoBehaviour {
     }
 
 	// Use this for initialization
-	protected virtual void Start () {
+	protected virtual void Start ()
+    {
 		ColorDeactivated();
         
         lightThis.color = Color.HSVToRGB((float)ownColor / 360.0f, 1f, 1f); ;
@@ -45,7 +47,7 @@ public class ColorComponent : MonoBehaviour {
         colorModel = ColorModelScript.instance;
 
 		colorModel.activeColor
-			.Where(x => ownColor == x)
+			.Where(x => ownColor == x && Vector3.Distance(PlayerScript.instance.transform.position, transform.position) < range)
 			.Subscribe (x => ColorActivated())
 			.AddTo(gameObject); 
 
@@ -57,28 +59,46 @@ public class ColorComponent : MonoBehaviour {
 
 	protected virtual void Update()
 	{
-		if (lerpTime > 0f) {
-			if (!fadingOut) {
-				lerpTime -= Time.deltaTime;
-				Mathf.Clamp (lerpTime, 0f, lerpDuration);
-			} else {
-				lerpTime -= 5 * Time.deltaTime;
-				if (lerpTime < 0.1f) {
-					meshrenderer.enabled = hasDoor ? true : false;
-					lightThis.enabled = false;
-					colliderThis.gameObject.layer = hasDoor ? 0 : 8;
-					lerpTime = 0;
-					fadingOut = false;
-				}
-			}
+        if (lerpTime > 0f)
+        {
+            if (!fadingOut)
+            {
+                lerpTime -= Time.deltaTime;
+                Mathf.Clamp(lerpTime, 0f, lerpDuration);
+            }
+            else
+            {
+                lerpTime -= 5 * Time.deltaTime;
+                if (lerpTime < 0.1f)
+                {
+                    meshrenderer.enabled = hasDoor ? true : false;
+                    lightThis.enabled = false;
+                    colliderThis.gameObject.layer = hasDoor ? 0 : 8;
+                    lerpTime = 0;
+                    fadingOut = false;
+                }
+            }
 
-			currentColor = Color.Lerp (currentColor, destColor, 1f - lerpTime / lerpDuration);
-			lightThis.color = Color.Lerp (currentColor, destColor, 1f - lerpTime / lerpDuration);
-			meshrenderer.material.color = currentColor;
-		}
+            currentColor = Color.Lerp(currentColor, destColor, 1f - lerpTime / lerpDuration);
+            lightThis.color = Color.Lerp(currentColor, destColor, 1f - lerpTime / lerpDuration);
+            meshrenderer.material.color = currentColor;
+        }
+        else
+        {
+
+            if (Vector3.Distance(PlayerScript.instance.transform.position, transform.position) > range)
+                ColorDeactivated();
+            else if (!lightThis.enabled && colorModel.activeColor.Value == ownColor)
+                ColorActivated();
+        }
 	}
 
-	protected virtual void ColorActivated()
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(transform.position, range);
+    }
+
+    protected virtual void ColorActivated()
     {
 		currentColor = new Color(0, 0, 0);
 		destColor = Color.HSVToRGB((float)ownColor/360.0f, 1f, 1f);

@@ -5,6 +5,7 @@ using UniRx;
 
 public class PlayerScript : MonoBehaviour {
 
+    public static PlayerScript instance;
 	public float jumpPower = 100f;
 
 	public float horizontalSpeed = 5f;
@@ -39,6 +40,7 @@ public class PlayerScript : MonoBehaviour {
 
     private void Awake()
     {
+        instance = this;
         currentColor = new ReactiveProperty<Color>();
         body = transform.GetComponent<Rigidbody2D>();
         animThis = GetComponentInChildren<Animator>();
@@ -74,6 +76,7 @@ public class PlayerScript : MonoBehaviour {
         bool walking = false;
 		if (isOnGround && Input.GetKeyDown(KeyCode.Space))
         {
+            Debug.Log("jump");
 			body.AddForce(Vector2.up * jumpPower);
             animThis.SetTrigger("tJump");
 		}
