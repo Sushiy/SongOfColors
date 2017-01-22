@@ -16,6 +16,7 @@ public class PlayerScript : MonoBehaviour {
 	ColorModelScript colorModel;
 
 	public SkinnedMeshRenderer meshrenderer;
+    Animator animThis;
 	//current Hue Value (HSV color)
 	float currentHue;
 
@@ -40,6 +41,7 @@ public class PlayerScript : MonoBehaviour {
     {
         currentColor = new ReactiveProperty<Color>();
         body = transform.GetComponent<Rigidbody2D>();
+        animThis = GetComponentInChildren<Animator>();
     }
 
 	// Use this for initialization
@@ -60,28 +62,42 @@ public class PlayerScript : MonoBehaviour {
 			Mathf.Clamp (lerpTime, 0, lerpDuration);
 		}
         currentColor.Value = Color.Lerp(currentColor.Value, destColor, 1f - lerpTime / lerpDuration);
+        float destHue, s, v;
+        Color.RGBToHSV(currentColor.Value, out destHue, out s, out v);
+        currentHue = Mathf.Lerp(currentHue, destHue, 1f - lerpTime / lerpDuration);
+        animThis.SetFloat("fNote", currentHue / 65);
         meshrenderer.material.color = currentColor.Value; 
 	}
 
 	void FixedUpdate() {
-		if (isOnGround && Input.GetKey(KeyCode.Space)) {
+        bool walking = false;
+		if (isOnGround && Input.GetKeyDown(KeyCode.Space))
+        {
 			body.AddForce(Vector2.up * jumpPower);
+            animThis.SetTrigger("tJump");
 		}
 		if (Input.GetKey(KeyCode.A)) {
 			body.transform.position += Vector3.left * (horizontalSpeed * Time.deltaTime);
 			transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-		}
-		else if (Input.GetKey(KeyCode.D)) {
+            walking = true;
+
+        }
+        else if (Input.GetKey(KeyCode.D)) {
 			body.transform.position += Vector3.right * (horizontalSpeed * Time.deltaTime);
 			transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-		}
-		if (Input.GetKeyDown(KeyCode.W)) {
+            walking = true;
+        }
+        /*
+        if (Input.GetKeyDown(KeyCode.W)) {
 			colorModel.addFrequence(10f);
 		}
 		if (Input.GetKeyDown(KeyCode.S)) {
 			colorModel.addFrequence(-10f);
-		}
-	}
+        }*/
+
+        animThis.SetBool("bWalking", walking);
+        animThis.SetBool("bAir", !isOnGround);
+    }
 
 	void OnCollisionEnter2D(Collision2D other) {
 		if (other.collider.tag == "Enemy") {
