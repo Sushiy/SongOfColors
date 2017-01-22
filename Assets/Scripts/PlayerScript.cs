@@ -69,9 +69,11 @@ public class PlayerScript : MonoBehaviour {
 		}
 		if (Input.GetKey(KeyCode.A)) {
 			body.transform.position += Vector3.left * (horizontalSpeed * Time.deltaTime);
+			transform.rotation = Quaternion.Euler(0f, 180f, 0f);
 		}
 		else if (Input.GetKey(KeyCode.D)) {
 			body.transform.position += Vector3.right * (horizontalSpeed * Time.deltaTime);
+			transform.rotation = Quaternion.Euler(0f, 0f, 0f);
 		}
 		if (Input.GetKeyDown(KeyCode.W)) {
 			colorModel.addFrequence(10f);
