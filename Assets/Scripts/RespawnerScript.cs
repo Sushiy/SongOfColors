@@ -19,4 +19,12 @@ public class RespawnerScript : MonoBehaviour {
 	public void Respawn() {
 		transform.position = spawnPosition;
 	}
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.layer == 11)
+        {
+            spawnPosition = collision.gameObject.transform.position ;
+        }
+    }
 }
