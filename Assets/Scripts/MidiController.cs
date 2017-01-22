@@ -54,17 +54,17 @@ public class MidiController : MonoBehaviour
 
     void NoteOn(MidiChannel channel, int note, float velocity)
     {
-        if(audioSources[GetPianoToIndex(note - buttonOffset)].isPlaying)
+        AudioSource chosenaudio = audioSources[GetPianoToIndex(note - buttonOffset)];
+        if (chosenaudio.isPlaying)
         {
-            StopCoroutine(FadeOut(audioSources[GetPianoToIndex(note - buttonOffset)]));
-            audioSources[GetPianoToIndex(note - buttonOffset)].Stop();
+            StopCoroutine(FadeOut(chosenaudio));
+            //chosenaudio.Stop();
         }
-        audioSources[GetPianoToIndex(note - buttonOffset)].pitch = Mathf.Pow(1.0594631f, note - (buttonOffset + NUMOFKEYS/2));
-        audioSources[GetPianoToIndex(note - buttonOffset)].volume = 0.7f;
-        audioSources[GetPianoToIndex(note - buttonOffset)].Play();
+        chosenaudio.pitch = Mathf.Pow(1.0594631f, note - (buttonOffset + NUMOFKEYS/2));
+        chosenaudio.volume = 0.7f;
+        chosenaudio.Play();
         ColorModelScript.instance.ActiveColor = (ColorModelScript.instance.getColorFromIndex(GetPianoToIndex(note - buttonOffset)));
         pressedButtonCount++;
-        //Debug.Log("NoteOn: " + channel + "," + note + "," + velocity);
     }
 
     void NoteOff(MidiChannel channel, int note)
@@ -73,8 +73,6 @@ public class MidiController : MonoBehaviour
         StartCoroutine(FadeOut(audioSources[GetPianoToIndex(note - buttonOffset)]));
         if(pressedButtonCount <= 0)
             ColorModelScript.instance.ActiveColor = (ColorModelScript.Color.NONE);
-
-        //Debug.Log("NoteOff: " + channel + "," + note);
     }
 
     void Knob(MidiChannel channel, int knobNumber, float knobValue)
@@ -115,11 +113,11 @@ public class MidiController : MonoBehaviour
         float volume = source.volume;
         while(volume > 0)
         {
-            volume -= 3.0f * Time.deltaTime;
+            volume -= 4.0f * Time.deltaTime;
             source.volume = volume;
             yield return null;
         }
 
-        source.Stop();
+        //source.Stop();
     }
 }
