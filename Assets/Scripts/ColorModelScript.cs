@@ -84,6 +84,7 @@ public class ColorModelScript : MonoBehaviour {
         {
             oldColor.Value = activeColor.Value;
             activeColor.Value = value;
+            setFrequence(frequences[value]);
         }
     }
 
@@ -119,14 +120,4 @@ public class ColorModelScript : MonoBehaviour {
         Debug.Log(c.ToString());
         activeColor.Value = c;
     }
-
-	void OnColorChanged(){
-		
-	}
-
-
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }
