@@ -1,0 +1,319 @@
+fileFormatVersion: 2
+guid: 13471874a23f8794e8ba3ed088bb36c3
+timeCreated: 1485086004
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: group1
+    100002: Head1
+    100004: Head2
+    100006: Head_End
+    100008: ikHandle1
+    100010: ikHandle2
+    100012: ikHandle3
+    100014: ikHandle4
+    100016: ikHandle5
+    100018: Jaw_End
+    100020: Jaw_Root
+    100022: left
+    100024: LT_Ear
+    100026: LT_Ear_End
+    100028: LT_Ear_Root
+    100030: LTB_Leg1
+    100032: LTB_Leg2
+    100034: LTB_Leg_End
+    100036: LTB_Leg_Foot
+    100038: LTB_Leg_Root
+    100040: LTF_Leg2
+    100042: LTF_Leg2 1
+    100044: LTF_Leg_End
+    100046: LTF_Leg_Foot
+    100048: LTF_Leg_Root
+    100050: Neck
+    100052: Root
+    100054: //RootNode
+    100056: RT_Ear
+    100058: RT_Ear_End
+    100060: RT_Ear_Root
+    100062: RTB_Leg1
+    100064: RTB_Leg2
+    100066: RTB_Leg_End
+    100068: RTB_Leg_Foot
+    100070: RTB_Leg_Root
+    100072: RTF_Leg2
+    100074: RTF_Leg2 1
+    100076: RTF_Leg_End
+    100078: RTF_Leg_Foot
+    100080: RTF_Leg_Root
+    100082: Spine1
+    100084: Spine2
+    100086: Spine3
+    100088: Spine_End
+    100090: Tail1
+    100092: Tail2
+    100094: Tail3
+    100096: Tail4
+    100098: Tail5
+    100100: Tail_End
+    100102: Tail_Root
+    100104: Zylinder
+    400000: group1
+    400002: Head1
+    400004: Head2
+    400006: Head_End
+    400008: ikHandle1
+    400010: ikHandle2
+    400012: ikHandle3
+    400014: ikHandle4
+    400016: ikHandle5
+    400018: Jaw_End
+    400020: Jaw_Root
+    400022: left
+    400024: LT_Ear
+    400026: LT_Ear_End
+    400028: LT_Ear_Root
+    400030: LTB_Leg1
+    400032: LTB_Leg2
+    400034: LTB_Leg_End
+    400036: LTB_Leg_Foot
+    400038: LTB_Leg_Root
+    400040: LTF_Leg2
+    400042: LTF_Leg2 1
+    400044: LTF_Leg_End
+    400046: LTF_Leg_Foot
+    400048: LTF_Leg_Root
+    400050: Neck
+    400052: Root
+    400054: //RootNode
+    400056: RT_Ear
+    400058: RT_Ear_End
+    400060: RT_Ear_Root
+    400062: RTB_Leg1
+    400064: RTB_Leg2
+    400066: RTB_Leg_End
+    400068: RTB_Leg_Foot
+    400070: RTB_Leg_Root
+    400072: RTF_Leg2
+    400074: RTF_Leg2 1
+    400076: RTF_Leg_End
+    400078: RTF_Leg_Foot
+    400080: RTF_Leg_Root
+    400082: Spine1
+    400084: Spine2
+    400086: Spine3
+    400088: Spine_End
+    400090: Tail1
+    400092: Tail2
+    400094: Tail3
+    400096: Tail4
+    400098: Tail5
+    400100: Tail_End
+    400102: Tail_Root
+    400104: Zylinder
+    4300000: Zylinder
+    7400000: panda_jump
+    9500000: //RootNode
+    13700000: Zylinder
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: panda_jump
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 20
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: group1
+        weight: 1
+      - path: group1/Zylinder
+        weight: 1
+      - path: ikHandle1
+        weight: 1
+      - path: ikHandle2
+        weight: 1
+      - path: ikHandle3
+        weight: 1
+      - path: ikHandle4
+        weight: 1
+      - path: ikHandle5
+        weight: 1
+      - path: left
+        weight: 1
+      - path: Root
+        weight: 1
+      - path: Root/LTB_Leg_Root
+        weight: 1
+      - path: Root/LTB_Leg_Root/LTB_Leg1
+        weight: 1
+      - path: Root/LTB_Leg_Root/LTB_Leg1/LTB_Leg2
+        weight: 1
+      - path: Root/LTB_Leg_Root/LTB_Leg1/LTB_Leg2/LTB_Leg_Foot
+        weight: 1
+      - path: Root/LTB_Leg_Root/LTB_Leg1/LTB_Leg2/LTB_Leg_Foot/LTB_Leg_End
+        weight: 1
+      - path: Root/RTB_Leg_Root
+        weight: 1
+      - path: Root/RTB_Leg_Root/RTB_Leg1
+        weight: 1
+      - path: Root/RTB_Leg_Root/RTB_Leg1/RTB_Leg2
+        weight: 1
+      - path: Root/RTB_Leg_Root/RTB_Leg1/RTB_Leg2/RTB_Leg_Foot
+        weight: 1
+      - path: Root/RTB_Leg_Root/RTB_Leg1/RTB_Leg2/RTB_Leg_Foot/RTB_Leg_End
+        weight: 1
+      - path: Root/Spine1
+        weight: 1
+      - path: Root/Spine1/Spine2
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/LTF_Leg_Root
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/LTF_Leg_Root/LTF_Leg2
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/LTF_Leg_Root/LTF_Leg2/LTF_Leg2 1
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/LTF_Leg_Root/LTF_Leg2/LTF_Leg2 1/LTF_Leg_Foot
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/LTF_Leg_Root/LTF_Leg2/LTF_Leg2 1/LTF_Leg_Foot/LTF_Leg_End
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/Neck
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/Neck/Head1
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/Neck/Head1/Head2
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/Neck/Head1/Head2/Head_End
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/Neck/Jaw_Root
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/Neck/Jaw_Root/Jaw_End
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/Neck/LT_Ear_Root
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/Neck/LT_Ear_Root/LT_Ear
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/Neck/LT_Ear_Root/LT_Ear/LT_Ear_End
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/Neck/RT_Ear_Root
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/Neck/RT_Ear_Root/RT_Ear
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/Neck/RT_Ear_Root/RT_Ear/RT_Ear_End
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/RTF_Leg_Root
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/RTF_Leg_Root/RTF_Leg2
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/RTF_Leg_Root/RTF_Leg2/RTF_Leg2 1
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/RTF_Leg_Root/RTF_Leg2/RTF_Leg2 1/RTF_Leg_Foot
+        weight: 1
+      - path: Root/Spine1/Spine2/Spine3/Spine_End/RTF_Leg_Root/RTF_Leg2/RTF_Leg2 1/RTF_Leg_Foot/RTF_Leg_End
+        weight: 1
+      - path: Root/Tail_Root
+        weight: 1
+      - path: Root/Tail_Root/Tail1
+        weight: 1
+      - path: Root/Tail_Root/Tail1/Tail2
+        weight: 1
+      - path: Root/Tail_Root/Tail1/Tail2/Tail3
+        weight: 1
+      - path: Root/Tail_Root/Tail1/Tail2/Tail3/Tail4
+        weight: 1
+      - path: Root/Tail_Root/Tail1/Tail2/Tail3/Tail4/Tail5
+        weight: 1
+      - path: Root/Tail_Root/Tail1/Tail2/Tail3/Tail4/Tail5/Tail_End
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
