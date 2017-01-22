@@ -41,13 +41,9 @@ public class PlayerScript : MonoBehaviour {
     {
         currentColor = new ReactiveProperty<Color>();
         body = transform.GetComponent<Rigidbody2D>();
-<<<<<<< HEAD
         animThis = GetComponentInChildren<Animator>();
-=======
-		respawner = GetComponent<RespawnerScript> ();
->>>>>>> 1e86259b62f0fa73dab6935ddb1dd403597d6a06
+        respawner = GetComponent<RespawnerScript>();
     }
-
 	// Use this for initialization
 	void Start ()
     {
@@ -67,9 +63,10 @@ public class PlayerScript : MonoBehaviour {
 		}
         currentColor.Value = Color.Lerp(currentColor.Value, destColor, 1f - lerpTime / lerpDuration);
         float destHue, s, v;
-        Color.RGBToHSV(currentColor.Value, out destHue, out s, out v);
+        Color.RGBToHSV(destColor, out destHue, out s, out v);
+        Color.RGBToHSV(currentColor.Value, out currentHue, out s, out v);
         currentHue = Mathf.Lerp(currentHue, destHue, 1f - lerpTime / lerpDuration);
-        animThis.SetFloat("fNote", currentHue / 65);
+        animThis.SetFloat("fNote", 1 - currentHue);
         meshrenderer.material.color = currentColor.Value; 
 	}
 
