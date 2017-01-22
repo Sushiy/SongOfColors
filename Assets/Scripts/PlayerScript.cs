@@ -22,12 +22,12 @@ public class PlayerScript : MonoBehaviour {
 
 	//Hue Value to interpolate to
 	Color destColor;
-
     public ReactiveProperty<Color> currentColor;
 
 	float lerpTime;
-
 	public float lerpDuration = 2.5f;
+
+	RespawnerScript respawner;
 
 	public void OnGround(){
 		isOnGround = true;
@@ -41,6 +41,7 @@ public class PlayerScript : MonoBehaviour {
     {
         currentColor = new ReactiveProperty<Color>();
         body = transform.GetComponent<Rigidbody2D>();
+		respawner = GetComponent<RespawnerScript> ();
     }
 
 	// Use this for initialization
@@ -87,10 +88,7 @@ public class PlayerScript : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D other) {
 		if (other.collider.tag == "Enemy") {
 			GameOver();
-		} else if (other.collider.tag == "Point") {
-			//increase Points
-			//despawn Point
-		}
+		} 
 	}
 
 	void ChangeColor(ColorModelScript.Color newColor)
@@ -105,6 +103,6 @@ public class PlayerScript : MonoBehaviour {
 	}
 		
 	void GameOver() {
-		Debug.Log("TOT!");
+		respawner.Respawn();
 	}
 }
