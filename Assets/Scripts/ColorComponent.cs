@@ -20,6 +20,9 @@ public class ColorComponent : MonoBehaviour {
 
 	bool fadingOut = false;
 
+	DoorScript door;
+	bool hasDoor;
+
 	MovementScript movement;
 	bool hasMovement;
 
@@ -29,8 +32,8 @@ public class ColorComponent : MonoBehaviour {
         colliderThis = GetComponentInChildren<Collider2D>();
         lightThis = GetComponentInChildren<Light>();
 
-		movement = GetComponent<MovementScript>();
-		hasMovement = movement;
+		door = GetComponent<DoorScript>();
+		hasDoor = door;
     }
 
 	// Use this for initialization
@@ -61,9 +64,9 @@ public class ColorComponent : MonoBehaviour {
 			} else {
 				lerpTime -= 5 * Time.deltaTime;
 				if (lerpTime < 0.1f) {
-					meshrenderer.enabled = false;
+					meshrenderer.enabled = hasDoor ? true : false;
 					lightThis.enabled = false;
-					colliderThis.gameObject.layer = hasMovement ? 0 : 8;
+					colliderThis.gameObject.layer = hasDoor ? 0 : 8;
 					lerpTime = 0;
 					fadingOut = false;
 				}
@@ -84,8 +87,8 @@ public class ColorComponent : MonoBehaviour {
         meshrenderer.enabled = true;
         lightThis.enabled = true;
 
-		if (hasMovement) {
-			movement.MoveUp();
+		if (hasDoor) {
+			door.MoveUp();
 		}
     }
 
@@ -95,8 +98,8 @@ public class ColorComponent : MonoBehaviour {
 		destColor= new Color(0, 0, 0);
 		lerpTime = lerpDuration;
 
-		if (hasMovement) {
-			movement.MoveDown();
+		if (hasDoor) {
+			door.MoveDown();
 		}
     }
 }

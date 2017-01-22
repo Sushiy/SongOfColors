@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovementScript : MonoBehaviour {
+public class DoorScript : MonoBehaviour {
 
 	public Vector3 moveVec;
 
@@ -20,21 +20,27 @@ public class MovementScript : MonoBehaviour {
 		time = 0;
 		movingBack = false;
 	}
-
+	
 	// Update is called once per frame
-	void FixedUpdate () {
-		if (!movingBack) {
+	void Update () {
+		if (!movingBack && time < lerpTime) {
 			time += Time.deltaTime;
 			time = Mathf.Clamp (time, 0f, lerpTime);
 			transform.position = Vector3.Lerp (startPos, startPos + moveVec, time / lerpTime);
-			if (time == lerpTime)
-				movingBack = true;
-		} else {
+		} else if (movingBack && time > 0f) {
 			time -= Time.deltaTime;
 			time = Mathf.Clamp (time, 0f, lerpTime);
 			transform.position = Vector3.Lerp (startPos, startPos + moveVec, time / lerpTime);
-			if (time == 0f)
-				movingBack = false;
 		}
+	}
+
+	public void MoveUp()
+	{
+		movingBack = false;
+	}
+
+	public void MoveDown()
+	{
+		movingBack = true;
 	}
 }
