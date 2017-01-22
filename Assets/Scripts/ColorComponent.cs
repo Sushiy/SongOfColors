@@ -8,20 +8,20 @@ public class ColorComponent : MonoBehaviour {
 	protected ColorModelScript colorModel;
     protected MeshRenderer meshrenderer;
     protected Collider2D colliderThis;
-    Light lightThis;
+    protected Light lightThis;
 
 	public ColorModelScript.Color ownColor;
 
-	Color currentColor;
-	Color destColor;
+	protected Color currentColor;
+	protected Color destColor;
 
-	float lerpTime;
-	float lerpDuration = 1f;
+	protected float lerpTime;
+	protected float lerpDuration = 1f;
 
-	bool fadingOut = false;
+	protected bool fadingOut = false;
 
-	DoorScript door;
-	bool hasDoor;
+	protected DoorScript door;
+	protected bool hasDoor;
 
 	MovementScript movement;
 	bool hasMovement;
