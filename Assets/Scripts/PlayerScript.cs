@@ -75,10 +75,10 @@ public class PlayerScript : MonoBehaviour {
 			body.transform.position += Vector3.right * (horizontalSpeed * Time.deltaTime);
 		}
 		if (Input.GetKeyDown(KeyCode.W)) {
-			colorModel.addFrequence(1f);
+			colorModel.addFrequence(10f);
 		}
 		if (Input.GetKeyDown(KeyCode.S)) {
-			colorModel.addFrequence(-1f);
+			colorModel.addFrequence(-10f);
 		}
 	}
 
