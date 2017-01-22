@@ -15,8 +15,7 @@ public class PlayerScript : MonoBehaviour {
 
 	ColorModelScript colorModel;
 
-	public MeshRenderer meshrenderer;
-
+	public SkinnedMeshRenderer meshrenderer;
 	//current Hue Value (HSV color)
 	float currentHue;
 
