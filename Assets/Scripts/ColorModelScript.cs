@@ -19,10 +19,9 @@ public class ColorModelScript : MonoBehaviour {
 
 	public ReactiveProperty<float> frequence;
 
-	Dictionary<Color,float> frequences;
+	public Dictionary<Color,float> frequences;
 
 	public void addFrequence(float f) {
-		print (frequence.Value + f);
 		setFrequence (frequence.Value + f);
 	}
 
@@ -60,17 +59,17 @@ public class ColorModelScript : MonoBehaviour {
 
     public Color getColorFromIndex(int index)
     {
-        switch(index)
+        int i = index % 7;
+        switch(i)
         {
-            case -1:{return Color.NONE;}
-            case 0: {return Color.PURPLE;}
-            case 1: {return Color.BLUE; }
-            case 2: {return Color.CYAN;}
+            case -1:{ return Color.NONE; }
+            case 0: { return Color.PURPLE; }
+            case 1: { return Color.BLUE; }
+            case 2: { return Color.CYAN; }
             case 3: { return Color.GREEN; }
-            case 4: {return Color.YELLOW;}
-            case 5: { return Color.ORANGE;}
-            case 6: {return Color.RED;}
-            case 7: { return Color.PURPLE; }
+            case 4: { return Color.YELLOW; }
+            case 5: { return Color.ORANGE; }
+            case 6: { return Color.RED; }
             default:return Color.NONE;
     	}
     }
@@ -85,6 +84,7 @@ public class ColorModelScript : MonoBehaviour {
         {
             oldColor.Value = activeColor.Value;
             activeColor.Value = value;
+            setFrequence(frequences[value]);
         }
     }
 
@@ -97,37 +97,23 @@ public class ColorModelScript : MonoBehaviour {
 		activeColor = new ReactiveProperty<Color>(Color.NONE);
 		oldColor = new ReactiveProperty<Color>(Color.NONE);
         frequence = new ReactiveProperty<float>();
-	}
-
-	// Use this for initialization
-	void Start ()
-    {
-		frequence.Value = 0;
+        frequence.Value = 0;
         frequences = new Dictionary<Color, float>();
 
-		frequences[Color.NONE] 		= -1f;
-		frequences[Color.PURPLE] 	= 5f;
-		frequences[Color.BLUE] 		= 15f;
-		frequences[Color.CYAN] 		= 25f;
-		frequences[Color.GREEN] 	= 35f;
-		frequences[Color.YELLOW] 	= 45f;
-		frequences[Color.ORANGE] 	= 55f;
-		frequences[Color.RED] 		= 65f;
-	}
+        frequences[Color.NONE] = -1f;
+        frequences[Color.PURPLE] = 5f;
+        frequences[Color.BLUE] = 15f;
+        frequences[Color.CYAN] = 25f;
+        frequences[Color.GREEN] = 35f;
+        frequences[Color.YELLOW] = 45f;
+        frequences[Color.ORANGE] = 55f;
+        frequences[Color.RED] = 65f;
+    }
 
     public void setActiveColor(Color c)
     {
-        Debug.Log(c.ToString());
+        oldColor.Value = activeColor.Value;
         activeColor.Value = c;
+        setFrequence(frequences[c]);
     }
-
-	void OnColorChanged(){
-		
-	}
-
-
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MidiJack;
-
+using UniRx;
 
 
 public class MidiController : MonoBehaviour
@@ -15,8 +15,6 @@ public class MidiController : MonoBehaviour
     private int buttonOffset = 48;
     public GameObject audioParent;
     AudioSource[] audioSources;
-
-    public bool[] buttonPressed;
     private int pressedButtonCount = 0;
 
     private void Start()
@@ -34,37 +32,36 @@ public class MidiController : MonoBehaviour
             audioSources[i] = audioParent.transform.GetChild(i).GetComponent<AudioSource>();
         }
 
-        buttonPressed = new bool[NUMOFKEYS];
+        PlayerScript.instance.cPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 0));
+        PlayerScript.instance.dPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 2));
+        PlayerScript.instance.ePlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 4));
+        PlayerScript.instance.fPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 5));
+        PlayerScript.instance.gPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 7));
+        PlayerScript.instance.aPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 9));
+        PlayerScript.instance.bPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 11));
+        PlayerScript.instance.c2Playing.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 12));
     }
 
-    private void Update()
+    void OtherInput(bool playing, int note)
     {
-        for (int i = 0 ; i < NUMOFKEYS; i++)
-        {
-            if(MidiMaster.GetKey(GetIndexToPiano(i) + buttonOffset) > 0)
-            {
-                buttonPressed[i] = true;
-            }
-            else
-            {
-                buttonPressed[i] = false;
-            }
-        }
+        if (playing)
+            NoteOn(0, note, 1.0f);
+        else
+            NoteOff(0, note);
     }
 
     void NoteOn(MidiChannel channel, int note, float velocity)
     {
-        if(audioSources[GetPianoToIndex(note - buttonOffset)].isPlaying)
+        AudioSource chosenaudio = audioSources[GetPianoToIndex(note - buttonOffset)];
+        if (chosenaudio.isPlaying)
         {
-            StopCoroutine(FadeOut(audioSources[GetPianoToIndex(note - buttonOffset)]));
-            audioSources[GetPianoToIndex(note - buttonOffset)].Stop();
+            StopCoroutine(FadeOut(chosenaudio));
         }
-        audioSources[GetPianoToIndex(note - buttonOffset)].pitch = Mathf.Pow(1.0594631f, note - (buttonOffset + NUMOFKEYS/2));
-        audioSources[GetPianoToIndex(note - buttonOffset)].volume = 0.7f;
-        audioSources[GetPianoToIndex(note - buttonOffset)].Play();
+        chosenaudio.pitch = Mathf.Pow(1.0594631f, note - (buttonOffset + NUMOFKEYS/2));
+        chosenaudio.volume = 0.5f;
+        chosenaudio.Play();
         ColorModelScript.instance.ActiveColor = (ColorModelScript.instance.getColorFromIndex(GetPianoToIndex(note - buttonOffset)));
         pressedButtonCount++;
-        //Debug.Log("NoteOn: " + channel + "," + note + "," + velocity);
     }
 
     void NoteOff(MidiChannel channel, int note)
@@ -73,8 +70,6 @@ public class MidiController : MonoBehaviour
         StartCoroutine(FadeOut(audioSources[GetPianoToIndex(note - buttonOffset)]));
         if(pressedButtonCount <= 0)
             ColorModelScript.instance.ActiveColor = (ColorModelScript.Color.NONE);
-
-        //Debug.Log("NoteOff: " + channel + "," + note);
     }
 
     void Knob(MidiChannel channel, int knobNumber, float knobValue)
@@ -98,8 +93,9 @@ public class MidiController : MonoBehaviour
 
     int GetPianoToIndex(int i)
     {
-        if (PianoToIndex.ContainsKey(i))
-            return PianoToIndex[i];
+        int im = i % 12;
+        if (PianoToIndex.ContainsKey(im))
+            return PianoToIndex[im];
         return 0;
     }
 
@@ -115,11 +111,9 @@ public class MidiController : MonoBehaviour
         float volume = source.volume;
         while(volume > 0)
         {
-            volume -= 3.0f * Time.deltaTime;
+            volume -= 4.0f * Time.deltaTime;
             source.volume = volume;
             yield return null;
         }
-
-        source.Stop();
     }
 }
