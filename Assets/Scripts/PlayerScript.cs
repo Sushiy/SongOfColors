@@ -72,21 +72,66 @@ public class PlayerScript : MonoBehaviour {
         meshrenderer.material.color = currentColor.Value; 
 	}
 
+    bool IsAnyKeyDown(KeyCode[] keys)
+    {
+        foreach (KeyCode key in keys)
+        {
+            if (Input.GetKey(key))
+                return true;
+        }
+        return false;
+    }
+
 	void FixedUpdate() {
         bool walking = false;
-		if (isOnGround && Input.GetKeyDown(KeyCode.Space))
+
+
+        if (IsAnyKeyDown(new KeyCode[] { KeyCode.Q, KeyCode.A, KeyCode.Y, KeyCode.I, KeyCode.K, KeyCode.Comma }))
         {
-            Debug.Log("jump");
-			body.AddForce(Vector2.up * jumpPower);
+            colorModel.setActiveColor(colorModel.getColorFromIndex(0));
+        }
+        else if (IsAnyKeyDown(new KeyCode[] { KeyCode.W, KeyCode.S, KeyCode.X, KeyCode.O, KeyCode.L, KeyCode.Period }))
+        {
+            colorModel.setActiveColor(colorModel.getColorFromIndex(1));
+        }
+        else if (IsAnyKeyDown(new KeyCode[] { KeyCode.E, KeyCode.D, KeyCode.C, KeyCode.P, KeyCode.Underscore }))
+        {
+            colorModel.setActiveColor(colorModel.getColorFromIndex(2));
+        }
+        else if (IsAnyKeyDown(new KeyCode[] { KeyCode.R, KeyCode.F, KeyCode.V, KeyCode.Hash }))
+        {
+            colorModel.setActiveColor(colorModel.getColorFromIndex(3));
+        }
+        else if (IsAnyKeyDown(new KeyCode[] { KeyCode.T, KeyCode.G, KeyCode.B }))
+        {
+            colorModel.setActiveColor(colorModel.getColorFromIndex(4));
+        }
+        else if (IsAnyKeyDown(new KeyCode[] { KeyCode.Z, KeyCode.H, KeyCode.N }))
+        {
+            colorModel.setActiveColor(colorModel.getColorFromIndex(5));
+        }
+        else if (IsAnyKeyDown(new KeyCode[] { KeyCode.U, KeyCode.J, KeyCode.M }))
+        {
+            colorModel.setActiveColor(colorModel.getColorFromIndex(6));
+        }
+        else
+        {
+            colorModel.setActiveColor(ColorModelScript.Color.NONE);
+        }
+
+
+        if (isOnGround && Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            body.AddForce(Vector2.up * jumpPower);
             animThis.SetTrigger("tJump");
 		}
-		if (Input.GetKey(KeyCode.A)) {
+		if (Input.GetKey(KeyCode.LeftArrow)) {
 			body.transform.position += Vector3.left * (horizontalSpeed * Time.deltaTime);
 			transform.rotation = Quaternion.Euler(0f, 180f, 0f);
             walking = true;
 
         }
-        else if (Input.GetKey(KeyCode.D)) {
+        else if (Input.GetKey(KeyCode.RightArrow)) {
 			body.transform.position += Vector3.right * (horizontalSpeed * Time.deltaTime);
 			transform.rotation = Quaternion.Euler(0f, 0f, 0f);
             walking = true;

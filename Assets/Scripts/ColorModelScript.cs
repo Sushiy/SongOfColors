@@ -22,7 +22,6 @@ public class ColorModelScript : MonoBehaviour {
 	public Dictionary<Color,float> frequences;
 
 	public void addFrequence(float f) {
-		print (frequence.Value + f);
 		setFrequence (frequence.Value + f);
 	}
 
@@ -118,7 +117,8 @@ public class ColorModelScript : MonoBehaviour {
 
     public void setActiveColor(Color c)
     {
-        Debug.Log(c.ToString());
+        oldColor.Value = activeColor.Value;
         activeColor.Value = c;
+        setFrequence(frequences[c]);
     }
 }
