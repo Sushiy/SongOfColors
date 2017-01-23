@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MidiJack;
-
+using UniRx;
 
 
 public class MidiController : MonoBehaviour
@@ -15,8 +15,6 @@ public class MidiController : MonoBehaviour
     private int buttonOffset = 48;
     public GameObject audioParent;
     AudioSource[] audioSources;
-
-    public bool[] buttonPressed;
     private int pressedButtonCount = 0;
 
     private void Start()
@@ -34,22 +32,22 @@ public class MidiController : MonoBehaviour
             audioSources[i] = audioParent.transform.GetChild(i).GetComponent<AudioSource>();
         }
 
-        buttonPressed = new bool[NUMOFKEYS];
+        PlayerScript.instance.cPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 0));
+        PlayerScript.instance.dPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 2));
+        PlayerScript.instance.ePlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 4));
+        PlayerScript.instance.fPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 5));
+        PlayerScript.instance.gPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 7));
+        PlayerScript.instance.aPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 9));
+        PlayerScript.instance.bPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 11));
+        PlayerScript.instance.c2Playing.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 12));
     }
 
-    private void Update()
+    void OtherInput(bool playing, int note)
     {
-        for (int i = 0 ; i < NUMOFKEYS; i++)
-        {
-            if(MidiMaster.GetKey(GetIndexToPiano(i) + buttonOffset) > 0)
-            {
-                buttonPressed[i] = true;
-            }
-            else
-            {
-                buttonPressed[i] = false;
-            }
-        }
+        if (playing)
+            NoteOn(0, note, 1.0f);
+        else
+            NoteOff(0, note);
     }
 
     void NoteOn(MidiChannel channel, int note, float velocity)
@@ -58,7 +56,6 @@ public class MidiController : MonoBehaviour
         if (chosenaudio.isPlaying)
         {
             StopCoroutine(FadeOut(chosenaudio));
-            //chosenaudio.Stop();
         }
         chosenaudio.pitch = Mathf.Pow(1.0594631f, note - (buttonOffset + NUMOFKEYS/2));
         chosenaudio.volume = 0.5f;

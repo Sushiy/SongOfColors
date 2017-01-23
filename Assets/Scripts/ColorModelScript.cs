@@ -97,23 +97,18 @@ public class ColorModelScript : MonoBehaviour {
 		activeColor = new ReactiveProperty<Color>(Color.NONE);
 		oldColor = new ReactiveProperty<Color>(Color.NONE);
         frequence = new ReactiveProperty<float>();
-	}
-
-	// Use this for initialization
-	void Start ()
-    {
-		frequence.Value = 0;
+        frequence.Value = 0;
         frequences = new Dictionary<Color, float>();
 
-		frequences[Color.NONE] 		= -1f;
-		frequences[Color.PURPLE] 	= 5f;
-		frequences[Color.BLUE] 		= 15f;
-		frequences[Color.CYAN] 		= 25f;
-		frequences[Color.GREEN] 	= 35f;
-		frequences[Color.YELLOW] 	= 45f;
-		frequences[Color.ORANGE] 	= 55f;
-		frequences[Color.RED] 		= 65f;
-	}
+        frequences[Color.NONE] = -1f;
+        frequences[Color.PURPLE] = 5f;
+        frequences[Color.BLUE] = 15f;
+        frequences[Color.CYAN] = 25f;
+        frequences[Color.GREEN] = 35f;
+        frequences[Color.YELLOW] = 45f;
+        frequences[Color.ORANGE] = 55f;
+        frequences[Color.RED] = 65f;
+    }
 
     public void setActiveColor(Color c)
     {
