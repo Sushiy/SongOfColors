@@ -61,7 +61,7 @@ public class MidiController : MonoBehaviour
             //chosenaudio.Stop();
         }
         chosenaudio.pitch = Mathf.Pow(1.0594631f, note - (buttonOffset + NUMOFKEYS/2));
-        chosenaudio.volume = 0.7f;
+        chosenaudio.volume = 0.5f;
         chosenaudio.Play();
         ColorModelScript.instance.ActiveColor = (ColorModelScript.instance.getColorFromIndex(GetPianoToIndex(note - buttonOffset)));
         pressedButtonCount++;
