@@ -7,17 +7,17 @@ using UniRx;
 
 public class MidiController : MonoBehaviour
 {
-    private Dictionary<int, int> IndexToPiano;
-
-    private Dictionary<int, int> PianoToIndex;
-
-    private const int NUMOFKEYS = 8;
-    private int buttonOffset = 48;
     public GameObject audioParent;
-    AudioSource[] audioSources;
-    private int pressedButtonCount = 0;
+    protected Dictionary<int, int> IndexToPiano;
 
-    private void Start()
+    protected Dictionary<int, int> PianoToIndex;
+
+    protected const int NUMOFKEYS = 8;
+    protected int buttonOffset = 48;
+    protected AudioSource[] audioSources;
+    protected int pressedButtonCount = 0;
+
+    protected void Start()
     {
         if (audioParent == null)
         {
@@ -32,17 +32,17 @@ public class MidiController : MonoBehaviour
             audioSources[i] = audioParent.transform.GetChild(i).GetComponent<AudioSource>();
         }
 
-        PlayerScript.instance.cPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 0));
-        PlayerScript.instance.dPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 2));
-        PlayerScript.instance.ePlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 4));
-        PlayerScript.instance.fPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 5));
-        PlayerScript.instance.gPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 7));
-        PlayerScript.instance.aPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 9));
-        PlayerScript.instance.bPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 11));
-        PlayerScript.instance.c2Playing.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 12));
+        KeyBoardController.instance.cPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 0));
+        KeyBoardController.instance.dPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 2));
+        KeyBoardController.instance.ePlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 4));
+        KeyBoardController.instance.fPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 5));
+        KeyBoardController.instance.gPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 7));
+        KeyBoardController.instance.aPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 9));
+        KeyBoardController.instance.bPlaying.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 11));
+        KeyBoardController.instance.c2Playing.Subscribe(keyPlaying => OtherInput(keyPlaying, buttonOffset + 12));
     }
 
-    void OtherInput(bool playing, int note)
+    protected void OtherInput(bool playing, int note)
     {
         if (playing)
             NoteOn(0, note, 1.0f);
@@ -50,7 +50,7 @@ public class MidiController : MonoBehaviour
             NoteOff(0, note);
     }
 
-    void NoteOn(MidiChannel channel, int note, float velocity)
+    protected virtual void NoteOn(MidiChannel channel, int note, float velocity)
     {
         AudioSource chosenaudio = audioSources[GetPianoToIndex(note - buttonOffset)];
         if (chosenaudio.isPlaying)
@@ -64,7 +64,7 @@ public class MidiController : MonoBehaviour
         pressedButtonCount++;
     }
 
-    void NoteOff(MidiChannel channel, int note)
+    protected virtual void NoteOff(MidiChannel channel, int note)
     {
         pressedButtonCount = (pressedButtonCount - 1) < 0? 0:pressedButtonCount -1;
         StartCoroutine(FadeOut(audioSources[GetPianoToIndex(note - buttonOffset)]));
@@ -72,26 +72,19 @@ public class MidiController : MonoBehaviour
             ColorModelScript.instance.ActiveColor = (ColorModelScript.Color.NONE);
     }
 
-    void Knob(MidiChannel channel, int knobNumber, float knobValue)
-    {
-        //Debug.Log("Knob: " + knobNumber + "," + knobValue);
-    }
-
-    void OnEnable()
+    protected void OnEnable()
     {
         MidiMaster.noteOnDelegate += NoteOn;
         MidiMaster.noteOffDelegate += NoteOff;
-        MidiMaster.knobDelegate += Knob;
     }
 
-    void OnDisable()
+    protected void OnDisable()
     {
         MidiMaster.noteOnDelegate -= NoteOn;
         MidiMaster.noteOffDelegate -= NoteOff;
-        MidiMaster.knobDelegate -= Knob;
     }
 
-    int GetPianoToIndex(int i)
+    protected int GetPianoToIndex(int i)
     {
         int im = i % 12;
         if (PianoToIndex.ContainsKey(im))
@@ -99,14 +92,14 @@ public class MidiController : MonoBehaviour
         return 0;
     }
 
-    int GetIndexToPiano(int i)
+    protected int GetIndexToPiano(int i)
     {
         if (IndexToPiano.ContainsKey(i))
             return IndexToPiano[i];
         return 0;
     }
     
-    IEnumerator FadeOut(AudioSource source)
+    protected IEnumerator FadeOut(AudioSource source)
     {
         float volume = source.volume;
         while(volume > 0)
