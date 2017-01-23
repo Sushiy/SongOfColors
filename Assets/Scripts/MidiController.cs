@@ -17,6 +17,8 @@ public class MidiController : MonoBehaviour
     protected AudioSource[] audioSources;
     protected int pressedButtonCount = 0;
 
+    public float standardVolume = 0.5f;
+
     protected void Start()
     {
         if (audioParent == null)
@@ -58,7 +60,7 @@ public class MidiController : MonoBehaviour
             StopCoroutine(FadeOut(chosenaudio));
         }
         chosenaudio.pitch = Mathf.Pow(1.0594631f, note - (buttonOffset + NUMOFKEYS/2));
-        chosenaudio.volume = 0.5f;
+        chosenaudio.volume = standardVolume;
         chosenaudio.Play();
         ColorModelScript.instance.ActiveColor = (ColorModelScript.instance.getColorFromIndex(GetPianoToIndex(note - buttonOffset)));
         pressedButtonCount++;

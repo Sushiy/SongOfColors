@@ -16,8 +16,11 @@ public class TukanController : MidiController
     public Image button1, button2, button3;
 
     float timeSinceLastInput = 0.0f;
-    float randomTukanDelay = 0.6666666f;
+    float randomTukanDelay = 1.33333f;
     public float randomTukanTime = 2.0f;
+
+    int notePlaying = -1;
+
     private void Awake()
     {
         targetImage = GetComponent<Image>();
@@ -32,22 +35,28 @@ public class TukanController : MidiController
 
     IEnumerator PlayRandomTukan()
     {
-        while(true)
+        while(enabled)
         {
-            if (timeSinceLastInput > randomTukanDelay)
+            yield return new WaitForSecondsRealtime(randomTukanDelay);
+
+            Debug.Log("Looped at." + Time.time);
+            if (notePlaying != -1)
             {
-                int i = Random.Range(0, 8);
+                NoteOff(0, notePlaying);
+                notePlaying = -1;
+            }
+            else if (timeSinceLastInput >= randomTukanDelay)
+            {
+                int i = Random.Range(0, 9);
                 if (i != 0 && i != 4 && i != 7)
                     yield return null;
                 else
                 {
                     NoteOn(0, i + buttonOffset, 1.0f);
-                    yield return new WaitForSeconds(randomTukanTime);
-                    NoteOff(0, i + buttonOffset);
+                    notePlaying = i + buttonOffset;
                 }
             }
         }
-        
     }
 
     public void ChangeToScene(int i)
