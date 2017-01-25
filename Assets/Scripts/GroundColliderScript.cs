@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class GroundColliderScript : MonoBehaviour {
 
-	PlayerScript father;
+	PlayerScript player;
 
 	// Use this for initialization
 	void Start () {
-		father = transform.GetComponentInParent<PlayerScript>();
+		player = transform.GetComponentInParent<PlayerScript>();
 	}
 	
 	// Update is called once per frame
@@ -16,21 +16,16 @@ public class GroundColliderScript : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other) {
 		if (other.collider.tag == "ground")
-        {
-            Debug.Log("ground met");
-			father.OnGround();
-		}
+            player.OnGround();
 	}
 
 	void OnCollisionStay2D(Collision2D other) {
-		if (other.collider.tag == "ground") {
-			father.OnGround();
-		}
+		if (other.collider.tag == "ground")
+			player.OnGround();
 	}
 
 	void OnCollisionExit2D(Collision2D other) {
-		if (other.collider.tag == "ground") {
-			father.OffGround();
-		}
+		if (other.collider.tag == "ground")
+			player.OffGround();
 	}
 }

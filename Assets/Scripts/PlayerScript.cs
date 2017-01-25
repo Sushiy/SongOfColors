@@ -77,38 +77,34 @@ public class PlayerScript : MonoBehaviour {
     {
         bool walking = false;
 
-        if (isOnGround && Input.GetKeyDown(KeyCode.UpArrow))
-        {
+        if (isOnGround && Input.GetKeyDown(KeyCode.UpArrow)) {
             body.AddForce(Vector2.up * jumpPower);
             animThis.SetTrigger("tJump");
 		}
+
 		if (Input.GetKey(KeyCode.LeftArrow)) {
 			body.transform.position += Vector3.left * (horizontalSpeed * Time.deltaTime);
 			transform.rotation = Quaternion.Euler(0f, 180f, 0f);
             walking = true;
-
         }
         else if (Input.GetKey(KeyCode.RightArrow)) {
 			body.transform.position += Vector3.right * (horizontalSpeed * Time.deltaTime);
 			transform.rotation = Quaternion.Euler(0f, 0f, 0f);
             walking = true;
         }
+
         animThis.SetBool("bWalking", walking);
         animThis.SetBool("bAir", !isOnGround);
     }
 
 	void OnCollisionEnter2D(Collision2D other) {
-		if (other.collider.tag == "Enemy") {
+		if (other.collider.tag == "Enemy")
 			GameOver();
-		} 
 	}
 
-	void ChangeColor(ColorModelScript.Color newColor)
-    {
+	void ChangeColor(ColorModelScript.Color newColor) {
         if(newColor == ColorModelScript.Color.NONE)
-        {
             destColor = Color.white;
-        }
         else
 		    destColor = Color.HSVToRGB((float)newColor / 360f, 1f, 1f);
 		lerpTime = lerpDuration;

@@ -63,12 +63,12 @@ public class MidiController : MonoBehaviour
         chosenaudio.volume = standardVolume;
         chosenaudio.Play();
         ColorModelScript.instance.ActiveColor = (ColorModelScript.instance.getColorFromIndex(GetPianoToIndex(note - buttonOffset)));
-        pressedButtonCount++;
+        ++pressedButtonCount;
     }
 
     protected virtual void NoteOff(MidiChannel channel, int note)
     {
-        pressedButtonCount = (pressedButtonCount - 1) < 0? 0:pressedButtonCount -1;
+        pressedButtonCount = (pressedButtonCount - 1) < 0 ? 0 : pressedButtonCount - 1;
         StartCoroutine(FadeOut(audioSources[GetPianoToIndex(note - buttonOffset)]));
         if(pressedButtonCount <= 0)
             ColorModelScript.instance.ActiveColor = (ColorModelScript.Color.NONE);
